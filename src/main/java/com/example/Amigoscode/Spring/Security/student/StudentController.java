@@ -23,7 +23,9 @@ public class StudentController {
         return STUDENTS.stream()
                 .filter(student -> studentId.equals(student.getStudentId()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Student " + studentId + " does not exists"));
+                .orElseThrow(() -> new IllegalStateException(
+                        "Student " + studentId + " does not exists"
+                ));
     }
 
 }
