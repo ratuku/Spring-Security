@@ -23,7 +23,7 @@ import static com.example.Amigoscode.Spring.Security.Security.ApplicationUserRol
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 //allow us to us method authorization
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -37,20 +37,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+//                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","index","/css/*","/js/*")
                     .permitAll()
                 .antMatchers("/api/**")
                     .hasRole(STUDENT.name())
-/*                .antMatchers(HttpMethod.DELETE,"/management/api/**")
+                .antMatchers(HttpMethod.DELETE,"/management/api/**")
                     .hasAuthority(COURSE_WRITE.getPermission()) //Authotity >> permission
                 .antMatchers(HttpMethod.POST,"/management/api/**")
                     .hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT,"/management/api/**")
                     .hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers("/management/api/**")
-                    .hasAnyRole(ADMIN.name(), ADMINTRAINEE.name() )*/
+                    .hasAnyRole(ADMIN.name(), ADMINTRAINEE.name() )
                 .anyRequest()
                 .authenticated()
                 .and()
