@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,8 @@ import static com.example.Amigoscode.Spring.Security.Security.ApplicationUserRol
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+//allow us to us method authorization
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
@@ -40,14 +43,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .antMatchers("/api/**")
                     .hasRole(STUDENT.name())
-                .antMatchers(HttpMethod.DELETE,"/management/api/**")
+/*                .antMatchers(HttpMethod.DELETE,"/management/api/**")
                     .hasAuthority(COURSE_WRITE.getPermission()) //Authotity >> permission
                 .antMatchers(HttpMethod.POST,"/management/api/**")
                     .hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT,"/management/api/**")
                     .hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers("/management/api/**")
-                    .hasAnyRole(ADMIN.name(), ADMINTRAINEE.name() )
+                    .hasAnyRole(ADMIN.name(), ADMINTRAINEE.name() )*/
                 .anyRequest()
                 .authenticated()
                 .and()
