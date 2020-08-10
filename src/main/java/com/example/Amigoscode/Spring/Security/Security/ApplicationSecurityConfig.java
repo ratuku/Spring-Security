@@ -16,8 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.print.DocFlavor;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.example.Amigoscode.Spring.Security.Security.ApplicationUserPermission.COURSE_WRITE;
 import static com.example.Amigoscode.Spring.Security.Security.ApplicationUserRole.*;
@@ -49,7 +52,23 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .formLogin()
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/courses",true)
+                    .passwordParameter("password") //same as default
+                    .usernameParameter("username") //same as default
+                .and()
+                .rememberMe() //defaults to 2 weeks
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+                    .key("somethingverysecured")
+                .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //if u enable crf remove this line. see logout doc
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
     }
 
     @Override
